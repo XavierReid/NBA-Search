@@ -1,0 +1,17 @@
+.nav {
+    padding: 5px;
+    box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+    font-size: 16px;
+    background: #212121;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 300;
+
+}
+
+.queried-items {
+    display: flex;
+    flex-wrap: wrap;
+}

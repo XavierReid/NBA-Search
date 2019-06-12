@@ -1,0 +1,10 @@
+
+.team-link {
+    color: #4f83cc;
+    font-weight: 400;
+}
+.team-link:hover {
+    cursor: pointer;
+    color: teal;
+}
+

@@ -1,0 +1,35 @@
+.stats-table th {
+    color: black;
+}
+.stats-table .reg {
+    background: #3e50b4;
+}
+.stats-table .post {
+    background: teal;
+}
+.stats-table .games {
+    background: #ad1457;
+}
+
+.stats-table th:hover {
+    background: #303030;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.stats-table th,
+.stats-table td,
+.stats-table tr {
+    border: 1px solid #303030;
+    border-collapse: collapse;
+    padding: 7px;
+}
+
+.stats-table tr:hover {
+    background: #303030;
+}
+
+.stats-table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    transition: all 2s;
+}

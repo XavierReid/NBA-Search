@@ -1,0 +1,33 @@
+.options {
+    display: flex;
+    padding: 5px;
+    align-content: flex-start;
+}
+
+.options * {
+    margin: 5px;
+}
+
+.options > input {
+    font-size: 14px;
+    line-height: 1em;
+    padding: 5px;
+    border-radius: 10px;
+    border: 0;
+    outline: none;
+    background: #303030;
+    color: rgba(255, 255, 255, 0.7);
+    flex-basis: 40%;
+}
+
+.options > select {
+    font-size: 14px;
+    line-height: 1em;
+    padding: 5px;
+    border-radius: 10px;
+    border: 0;
+    outline: none;
+    background: #303030;
+    color: rgba(255, 255, 255, 0.7);
+    flex-basis: 20%;
+}
