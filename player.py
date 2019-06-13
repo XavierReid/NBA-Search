@@ -18,9 +18,9 @@ class Player:
     def __init__(self, id):
         self.id = id
         self.common_info = commonplayerinfo.CommonPlayerInfo(
-            id, headers=custom_headers, timeout=100)
+            id, headers=custom_headers, timeout=30)
         self.profile = playerprofilev2.PlayerProfileV2(
-            id, "PerGame", headers=custom_headers, timeout=100)
+            id, "PerGame", headers=custom_headers, timeout=30)
         self.__get_basic_info()
 
     def __get_basic_info(self):
@@ -62,7 +62,7 @@ class Player:
 
     def get_game_logs(self, season_type, season, date_from=None, date_to=None):
         game_logs = playergamelog.PlayerGameLog(
-            self.id, season, season_type, headers=custom_headers, timeout=100)
+            self.id, season, season_type, headers=custom_headers, timeout=30)
         games = game_logs.player_game_log.get_dict()["data"]
         # return list(filter(lambda game: utils.verify_dates(game, True, date_from, date_to), games))
         return games

@@ -18,7 +18,7 @@ class Team:
     def __init__(self, id, season=None):
         self.id = id
         self.common_info = teaminfocommon.TeamInfoCommon(
-            team_id=id, season_nullable=season, headers=custom_headers, timeout=100)
+            team_id=id, season_nullable=season, headers=custom_headers, timeout=30)
         self.__get_basic_info()
         self.roster = self.get_roster()
         self.coaches = self.get_coaches()
@@ -66,7 +66,7 @@ class Team:
     def get_coaches(self, season=None):
         season = season or self.season
         datasets = commonteamroster.CommonTeamRoster(
-            season=season, team_id=self.id, headers=custom_headers, timeout=100)
+            season=season, team_id=self.id, headers=custom_headers, timeout=30)
         coaches = datasets.coaches.get_dict()["data"]
         return list(
             map(
@@ -81,7 +81,7 @@ class Team:
     def get_roster(self, season=None):
         season = season or self.season
         datasets = commonteamroster.CommonTeamRoster(
-            season=season, team_id=self.id, headers=custom_headers, timeout=100)
+            season=season, team_id=self.id, headers=custom_headers, timeout=30)
         roster = datasets.common_team_roster.get_dict()["data"]
         return list(
             map(
@@ -101,13 +101,13 @@ class Team:
     def get_game_logs(self, season_type, season, date_from=None, date_to=None):
         season = season or self.season
         logs = teamgamelog.TeamGameLog(
-            self.id, season, season_type, headers=custom_headers, timeout=100)
+            self.id, season, season_type, headers=custom_headers, timeout=30)
         games = logs.team_game_log.get_dict()["data"]
         # return list(filter(lambda game: utils.verify_dates(game, False, date_from, date_to), games))
         return games
 
     def get_stats(self, season_type):
         dataset = teamyearbyyearstats.TeamYearByYearStats(
-            per_mode_simple="PerGame", season_type_all_star=season_type, team_id=self.id, headers=custom_headers, timeout=100)
+            per_mode_simple="PerGame", season_type_all_star=season_type, team_id=self.id, headers=custom_headers, timeout=30)
         stats = dataset.get_dict()["resultSets"][0]["rowSet"]
         return stats
