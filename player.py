@@ -12,17 +12,15 @@ custom_headers = {
     'Accept-Encoding': 'gzip, deflate, br',
     'Accept-Language': 'en-US,en;q=0.9',
 }
-# proxy = 'http://localhost:5000'
-timeout = 5
 
 
 class Player:
     def __init__(self, id):
         self.id = id
         self.common_info = commonplayerinfo.CommonPlayerInfo(
-            id, headers=custom_headers, timeout=timeout)
+            id, headers=custom_headers, timeout=100)
         self.profile = playerprofilev2.PlayerProfileV2(
-            id, "PerGame", headers=custom_headers, timeout=timeout)
+            id, "PerGame", headers=custom_headers, timeout=100)
         self.__get_basic_info()
 
     def __get_basic_info(self):
@@ -63,7 +61,8 @@ class Player:
                      "jersey_num": self.jersey_num}}
 
     def get_game_logs(self, season_type, season, date_from=None, date_to=None):
-        game_logs = playergamelog.PlayerGameLog(self.id, season, season_type)
+        game_logs = playergamelog.PlayerGameLog(
+            self.id, season, season_type, headers=custom_headers, timeout=100)
         games = game_logs.player_game_log.get_dict()["data"]
         # return list(filter(lambda game: utils.verify_dates(game, True, date_from, date_to), games))
         return games
