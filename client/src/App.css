@@ -7,7 +7,6 @@ html {
     padding: 0;
     margin: 0;
     font-family: 'Lato', sans-serif;
-    transition: all 1s ease;
 }
 
 strong {
@@ -32,6 +31,7 @@ body,
 }
 
 .basic-info:hover {
+    transition: all 0.7s ease;
     border: 2px solid #4f83cc;
 }
 
@@ -47,6 +47,7 @@ body,
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-around;
+    transition: all 1s ease;
 }
 
 .container {
@@ -62,6 +63,7 @@ body,
 
 .container:hover {
     border: 2px solid #ad1457;
+    transition: all 0.7s ease;
 }
 .container > header {
     text-align: left;
@@ -83,6 +85,7 @@ body,
 
 .roster:hover {
     border: 2px solid teal;
+    transition: all 0.7s ease;
 }
 
 h5,
@@ -93,8 +96,8 @@ h4 {
 hr {
     color: gray;
 }
-/* 
-.content{
+
+/* .content{
     display: flex;
     flex-wrap: wrap;
 } */

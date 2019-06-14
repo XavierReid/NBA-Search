@@ -1,6 +1,9 @@
-
+.container.trends{
+    width: 850px;
+}
 .container.trends:hover {
     border: 2px solid #3e50b4;
+    transition: all 0.7s ease;
 }
 .trends h2 {
     text-align: center;

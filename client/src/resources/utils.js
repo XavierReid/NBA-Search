@@ -44,6 +44,7 @@ export const teamStatsCol = [
 ];
 
 export const gameCols = [
+    'GAME_ID',
     'DATE',
     'MATCHUP',
     'WL',
@@ -64,6 +65,7 @@ export const gameCols = [
     '+/-'
 ];
 export const teamGameCols = [
+    'GAME_ID',
     'DATE',
     'MATCHUP',
     'W',

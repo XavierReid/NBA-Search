@@ -17,7 +17,7 @@ export default function Table({ data, columns, id, type, setData }) {
             name: stat.SEASON || stat.DATE || stat.YEAR,
             [dataType]: stat[dataType]
         }));
-        if (data.length > 1 && (data[0].DATE || data[0].YEAR)) {
+        if (data.length > 1 && (data[0].DATE)) {
             filtered.reverse();
         }
         setData({ data: filtered, type: dataType });
