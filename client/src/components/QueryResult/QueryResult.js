@@ -7,18 +7,16 @@ export default function QueryResult({
     handleClick,
     isPlayer
 }) {
-    const { full_name, id } = item;
     const toSend = {
-        full_name,
-        id,
+        full_name: item.full_name,
+        id: item.id,
         is_player: isPlayer !== undefined || item.is_active !== undefined
     };
-
     return (
         <li
             className={isQueried ? 'queried' : 'result-item'}
             onClick={() => handleClick(toSend)}>
-            {full_name}
+            {item.full_name}
         </li>
     );
 }

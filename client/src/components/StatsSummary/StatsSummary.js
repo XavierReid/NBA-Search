@@ -2,26 +2,23 @@ import React, { useState, useEffect } from 'react';
 import Toggle from '../Toggle';
 import Table from '../Table';
 import GameLog from '../GameLog';
+import Trends from '../Trends';
+import useFetch from '../../resources/useFetch';
 import {
     doFetch,
     initialState,
     statsCols,
     teamStatsCol,
     gameCols,
-    teamGameCols
+    teamGameCols,
+    getStatus
 } from '../../resources/utils';
 
-export default function StatsSummary({
-    baseURL,
-    forPlayer,
-    seasons,
-    id,
-    setStats
-}) {
-    const [regSeason, setRegSeason] = useState(initialState);
-    const [postSeason, setPostSeason] = useState(initialState);
+export default function StatsSummary({ baseURL, id, seasons, isPlayer }) {
+    const stats = useFetch(baseURL + '/stats');
     const [regGames, setRegGames] = useState(null);
     const [postGames, setPostGames] = useState(null);
+    const [graphData, setGraphData] = useState(null);
 
     useEffect(() => {
         const init = () =>
@@ -53,61 +50,67 @@ export default function StatsSummary({
         }
     }
 
+    if (getStatus(stats)) {
+        return getStatus(stats);
+    }
+    const { regularSeason, postSeason } = stats.data;
     return (
         <div className="summary">
             <Toggle init={false}>
                 {({ on, toggle }) => (
                     <div className="container">
-                        <header
-                            onClick={() => {
-                                toggle();
-                                if (!regSeason.data) {
-                                    doFetch(
-                                        `${baseURL}/stats/Regular Season`,
-                                        setRegSeason
-                                    );
-                                }
-                            }}>
-                            {forPlayer
+                        <header onClick={toggle}>
+                            {isPlayer
                                 ? 'Regular Season Statistics'
                                 : 'Team Season Statistics'}
                         </header>
                         {on && (
-                            <Table
-                                data={regSeason}
-                                cols={forPlayer ? statsCols : teamStatsCol}
-                                type={'reg'}
-                                id={id}
-                                setStats={setStats}
-                            />
+                            <React.Fragment>
+                                <Table
+                                    data={regularSeason[0]}
+                                    id={id}
+                                    type="reg"
+                                    columns={
+                                        isPlayer ? statsCols : teamStatsCol
+                                    }
+                                    setData={setGraphData}
+                                />
+                                {isPlayer && (
+                                    <Table
+                                        data={regularSeason[1]}
+                                        id={id}
+                                        type="reg"
+                                        columns={statsCols}
+                                        setData={setGraphData}
+                                    />
+                                )}
+                            </React.Fragment>
                         )}
                     </div>
                 )}
             </Toggle>
-            {forPlayer && (
+            {isPlayer && (
                 <Toggle init={false}>
                     {({ on, toggle }) => (
                         <div className="container">
-                            <header
-                                onClick={() => {
-                                    toggle();
-                                    if (!postSeason.data) {
-                                        doFetch(
-                                            `${baseURL}/stats/Playoffs`,
-                                            setPostSeason
-                                        );
-                                    }
-                                }}>
-                                Playoff Statistics
-                            </header>
+                            <header onClick={toggle}>Playoff Statistics</header>
                             {on && (
-                                <Table
-                                    data={postSeason}
-                                    cols={statsCols}
-                                    type={'post'}
-                                    id={id}
-                                    setStats={setStats}
-                                />
+                                <React.Fragment>
+                                    <Table
+                                        data={postSeason[0]}
+                                        id={id}
+                                        type="post"
+                                        columns={statsCols}
+                                        setData={setGraphData}
+                                    />
+                                    <Table
+                                        data={postSeason[1]}
+                                        id={id}
+                                        type="post"
+                                        columns={statsCols}
+                                        setData={setGraphData}
+                                    />
+                                </React.Fragment>
                             )}
                         </div>
                     )}
@@ -116,21 +119,30 @@ export default function StatsSummary({
             <Toggle init={false}>
                 {({ on, toggle }) => (
                     <div className="container">
-                        <header onClick={toggle}>Game Logs</header>
+                        <header onClick={toggle}>Game Log </header>
                         {on && (
                             <GameLog
                                 seasons={seasons}
                                 post={postGames}
                                 reg={regGames}
                                 id={id}
-                                cols={forPlayer ? gameCols : teamGameCols}
+                                columns={isPlayer ? gameCols : teamGameCols}
                                 fetchGames={fetchGames}
-                                setStats={setStats}
+                                setData={setGraphData}
                             />
                         )}
                     </div>
                 )}
             </Toggle>
+            {graphData && graphData.data.length > 1 && (
+                <div className="container trends">
+                    <Trends
+                        data={graphData.data}
+                        type={graphData.type}
+                        handleDelete={setGraphData}
+                    />
+                </div>
+            )}
         </div>
     );
 }

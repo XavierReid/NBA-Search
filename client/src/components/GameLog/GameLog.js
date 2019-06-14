@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Toolbar from '../Toolbar';
 import Table from '../Table';
 import { getStatus } from '../../resources/utils';
-
+// ADD GRAPHS BACK
 export default function GameLog({
     fetchGames,
     reg,
     post,
     id,
     seasons,
-    cols,
-    setStats
+    columns,
+    setData
 }) {
     const [season, setSeason] = useState('');
     const [seasonType, setSeasonType] = useState('');
@@ -20,7 +20,7 @@ export default function GameLog({
 
     useEffect(() => {
         if (season && seasonType) {
-            const path = `/stats/${seasonType}/${season}`;
+            const path = `/stats/${season}/${seasonType}`;
             fetchGames(season, seasonType, path);
         }
     }, [season, seasonType, fetchGames]);
@@ -33,13 +33,12 @@ export default function GameLog({
         }
     }
 
-    function filterGames(data, type, start, end) {
-        if (getStatus(data) || type === '') {
-            return data;
+    function filterGames(games, type, start, end) {
+        if (type === '') {
+            return games;
         }
-        const games = data.data;
         let filtered;
-        if (type === 'date' || type === 'matchup' || type === 'wl') {
+        if (type === 'DATE' || type === 'MATCHUP' || type === 'WL') {
             filtered = games.filter(game =>
                 game[type].toLowerCase().includes(start.toLowerCase())
             );
@@ -55,20 +54,21 @@ export default function GameLog({
                 return true;
             });
         }
-        const copy = { ...data };
-        copy.data = filtered;
-        return copy;
+        return filtered;
     }
 
     function createGamesTable(games) {
-        const categories = category.toLowerCase();
+        const categories = category;
+        if (getStatus(games[season])) {
+            return getStatus(games[season]);
+        }
         return (
             <Table
-                data={filterGames(games[season], categories, start, end)}
-                cols={cols}
+                data={filterGames(games[season].data, categories, start, end)}
+                columns={columns}
                 id={id}
                 type={'games'}
-                setStats={setStats}
+                setData={setData}
             />
         );
     }
@@ -82,7 +82,7 @@ export default function GameLog({
         <div className="log">
             <Toolbar
                 seasons={seasons}
-                cols={cols}
+                cols={columns}
                 id={id}
                 category={category}
                 search={setSeasonData}

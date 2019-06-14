@@ -1,37 +1,49 @@
 import React from 'react';
 
-export default function PlayerInfo({ data, team, addItem }) {
-    const teamName = `${team.city} ${team.name}`;
+export default function PlayerInfo({ data, addItem }) {
+    const { commonInfo, headlineStats } = data;
     const teamData = {
-        full_name: teamName,
-        id: team.team_id,
+        full_name: commonInfo.teamName,
+        id: commonInfo.teamId,
         is_player: false
+    };
+
+    const height = heightStr => {
+        const [ft, inch] = heightStr.split('-');
+        return (
+            <span>
+                {ft} ft {inch} in
+            </span>
+        );
     };
     return (
         <div className="basic-info">
-            <h4>
-                {data.first_name} {data.last_name}
-            </h4>
-            <p>Postion: {team.pos}</p>
+            <h4>{headlineStats[1]}</h4>
+            <h5>
+                {headlineStats[3]} pts/ {headlineStats[5]} reb/{' '}
+                {headlineStats[4]} ast ({headlineStats[2]})
+            </h5>
+            <hr />
+            <p>Postion: {commonInfo.position}</p>
             <p>
                 <em>
-                    {data.height}, {data.weight} lbs
+                    {height(commonInfo.height)} | {commonInfo.weight} lbs
                 </em>
             </p>
             <p>
                 <strong>Team</strong>:{' '}
                 <span className="team-link" onClick={() => addItem(teamData)}>
-                    {teamName}
+                    {commonInfo.teamName}
                 </span>{' '}
-                (# {team.jersey_num})
+                (#{commonInfo.jerseyNum})
             </p>
             <p>
-                <strong>Born</strong>: {data.birth_date.substr(0, 10)} out of{' '}
-                {data.last_affiliation}
+                <strong>Born</strong>: {commonInfo.birthDate.substr(0, 10)} out
+                of {commonInfo.lastAffiliation}
             </p>
             <p>
-                <strong>Experience</strong>: {data.exp}{' '}
-                {Number(data.exp) > 1 ? 'years' : 'year'}
+                <strong>Experience</strong>: {commonInfo.exp}{' '}
+                {Number(commonInfo.exp) > 1 ? 'years' : 'year'}
             </p>
         </div>
     );

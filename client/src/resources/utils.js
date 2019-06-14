@@ -61,7 +61,7 @@ export const gameCols = [
     'STL',
     'TOV',
     'PF',
-    'PLUS_MINUS'
+    '+/-'
 ];
 export const teamGameCols = [
     'DATE',

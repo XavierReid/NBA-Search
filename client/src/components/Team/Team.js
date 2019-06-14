@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TeamInfo from './TeamInfo';
-import Trends from '../Trends';
 import QueryResult from '../QueryResult';
 import useFetch from '../../resources/useFetch';
 import { getStatus } from '../../resources/utils';
@@ -10,41 +9,40 @@ import StatsSummary from '../StatsSummary';
 export default function Team({ team, addItem }) {
     const teamURL = `/api/teams/${team.id}`;
     const info = useFetch(teamURL);
-    const [stats, setStats] = useState(null);
 
     if (getStatus(info)) {
         return getStatus(info);
     }
 
-    const { adv_stats, record, basic_info, roster } = info.data;
-
     return (
         <div className="item team">
-            <TeamInfo stats={adv_stats} record={record} info={basic_info} />
+            <TeamInfo data={info.data} />
             <div className="roster">
                 <h4>Roster</h4>
                 <div>
-                    {roster.map(player => (
-                        <QueryResult
-                            item={player}
-                            key={player.id}
-                            isQueried={true}
-                            handleClick={addItem}
-                            isPlayer={true}
-                        />
-                    ))}
+                    {info.data.roster.map(player => {
+                        const item = {
+                            id: player[12],
+                            full_name: player[3]
+                        };
+                        return (
+                            <QueryResult
+                                item={item}
+                                key={player[12]}
+                                isQueried={true}
+                                handleClick={addItem}
+                                isPlayer={true}
+                            />
+                        );
+                    })}
                 </div>
             </div>
             <StatsSummary
-                forPlayer={false}
+                isPlayer={false}
                 id={team.id}
-                seasons={basic_info.seasons}
+                seasons={info.data.availableSeasons}
                 baseURL={teamURL}
-                setStats={setStats}
             />
-            {stats && stats.data.length > 1 && (
-                <Trends data={stats.data} type={stats.type} handleDelete={setStats}/>
-            )}
         </div>
     );
 }
