@@ -35,6 +35,7 @@ export default function TeamInfo({ data }) {
                     {teamRanks.astRank} of 30) <strong>REB/G</strong>:{' '}
                     <em>{teamRanks.rebPg}</em> (#{teamRanks.rebRank} of 30)
                 </p>
+                <hr/>
             </div>
         </div>
     );

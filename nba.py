@@ -51,6 +51,10 @@ class Player:
 
         return {"regularSeason": (reg_season, [reg_career]), "postSeason": (post_season, [post_career])}
 
+    def get_awards(self):
+        awards = endpoints.PlayerAwards(self.id, headers=HEADERS)
+        return awards.get_dict()["resultSets"][0]["rowSet"]
+
 
 class Team:
     def __init__(self, id):
@@ -85,10 +89,21 @@ class Team:
 
     def get_stats(self):
         tybys = endpoints.TeamYearByYearStats(
-            self.id,per_mode_simple="PerGame", headers=HEADERS)
+            self.id, per_mode_simple="PerGame", headers=HEADERS)
         stats = tybys.get_dict()["resultSets"][0]["rowSet"]
         stats = [utils.parse_team_stats(season) for season in stats]
         return {"regularSeason": [stats]}
+
+
+class Game:
+    def __init__(self, id):
+        self.id = id
+
+    def get_pbp(self, start="1", end="4"):
+        game = endpoints.PlayByPlayV2(
+            self.id, end_period=end, start_period=start, headers=HEADERS)
+        quarters = game.play_by_play.get_dict()
+        return [play_breakdown(play) for play in quarters["data"]]
 
 
 def get_players(active_only=False):
@@ -99,3 +114,26 @@ def get_players(active_only=False):
 
 def get_teams():
     return teams.get_teams()
+
+
+def play_breakdown(play):
+    breakdown = {
+        "period": play[4],
+        "gameTime": play[5],
+        "localTime": play[6],
+        "homeDescription": play[7],
+        "neutralDescription": play[8],
+        "vistorDescription": play[9],
+        "score": play[10],
+        "scoreMargin": play[11]
+    }
+    return breakdown
+
+
+if __name__ == "__main__":
+    # 0041800406
+    game_id = "0041800406"
+    game = Game(game_id)
+    pbp = game.get_pbp()
+    print(pbp[-5:])
+# ['9:13 PM', '10:43', None, None, "Lowry 26' 3PT Jump Shot (8 PTS)", '8 - 0', '-8', 5, 200768, 'Kyle Lowry', 1610612761, 'Toronto', 'Raptors', 'TOR', 0, 0, None, None, None, None, None, 0, 0, None, None, None, None, None]

@@ -18,12 +18,13 @@
 }
 
 .exit {
-    border: solid 6px #ad1457;
+    border: solid 1px #ad1457;
+    background: #ad1457;
     display: inline-block;
     border-radius: 50%;
     /* padding: 2px; */
 }
 
 .exit:hover {
-    border-color: red;
+    background: red;
 }

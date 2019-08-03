@@ -5,7 +5,7 @@ import './Table.css';
 
 export default function Table({ data, columns, id, type, setData }) {
     function handleClick(e, callback) {
-        if (e.shiftKey) {
+        if (e.button === 2) {
             getDataTrends(e);
             return;
         }
@@ -17,7 +17,7 @@ export default function Table({ data, columns, id, type, setData }) {
             name: stat.SEASON || stat.DATE || stat.YEAR,
             [dataType]: stat[dataType]
         }));
-        if (data.length > 1 && (data[0].DATE)) {
+        if (data.length > 1 && data[0].DATE) {
             filtered.reverse();
         }
         setData({ data: filtered, type: dataType });
@@ -47,8 +47,10 @@ export default function Table({ data, columns, id, type, setData }) {
         return (
             <Toggle init={true} key={generateKey(`${id}_${index}}`)}>
                 {({ on, toggle }) => (
-                    <table className="stats-table">
-                        <thead onClick={e => handleClick(e, toggle)}>
+                    <table
+                        className="stats-table"
+                        onContextMenu={e => e.preventDefault()}>
+                        <thead onMouseDown={e => handleClick(e, toggle)}>
                             <tr>
                                 {columns.map(col => (
                                     <th

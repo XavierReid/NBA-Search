@@ -12,6 +12,7 @@ export default function Player({ player, addItem }) {
     if (getStatus(info)) {
         return getStatus(info);
     }
+    console.log(info.data);
     return (
         <div className="item player">
             <PlayerInfo data={info.data} addItem={addItem} />

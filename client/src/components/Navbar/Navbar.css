@@ -1,21 +1,33 @@
 .nav {
+    min-height: 60px;
     padding: 5px;
     box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
     font-size: 16px;
     background: #212121;
     width: 100%;
-    min-height: 60px;
     top: 0;
     left: 0;
     position: fixed;
-    z-index: 300;
     display: flex;
     align-items: flex-start;
-
 }
 
 .queried-items {
     display: flex;
     flex-wrap: wrap;
+}
+
+.nav-items {
     margin-left: 45%;
+    display: flex;
+    align-items: flex-start;
+}
+
+.nav-form{
+    margin: 10px;
+
+}
+
+.nav-form > *{
+    border-radius: 0;
 }

@@ -26,6 +26,7 @@
 
 .stats-table tr:hover {
     background: #303030;
+    cursor: pointer;
 }
 
 .stats-table {

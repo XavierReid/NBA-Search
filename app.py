@@ -20,12 +20,14 @@ def get_players():
 
 
 @app.route("/api/players/<player_id>")
-def get_player(player_id):
+def get_player(player_id):  # 201935 --> James Harden
     p = nba.Player(player_id)
     common_info, available_seasons, headline_stats = p.get_common_info()
+    awards = p.get_awards()
     return jsonify({"commonInfo": common_info,
                     "availableSeasons": available_seasons,
-                    "headlineStats": headline_stats[0]})
+                    "headlineStats": headline_stats[0],
+                    "awards": awards})
 
 
 @app.route("/api/players/<player_id>/stats")
@@ -73,6 +75,13 @@ def get_team_game_log(team_id, season, season_type):
     t = nba.Team(team_id)
     games = t.get_game_log(season, season_type)
     return jsonify(games)
+
+
+@app.route("/api/games/<game_id>")
+def get_game_pbp(game_id):
+    game = nba.Game(game_id)
+    plays = game.get_pbp()
+    return jsonify(plays)
 
 
 if __name__ == "__main__":

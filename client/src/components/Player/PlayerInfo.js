@@ -16,6 +16,13 @@ export default function PlayerInfo({ data, addItem }) {
             </span>
         );
     };
+
+    const awards = data.awards.reduce((acc, curr) => {
+        processAward(acc, curr);
+        return acc;
+    }, {});
+
+    console.log(awards);
     return (
         <div className="basic-info">
             <h4>{headlineStats[1]}</h4>
@@ -45,6 +52,39 @@ export default function PlayerInfo({ data, addItem }) {
                 <strong>Experience</strong>: {commonInfo.exp}{' '}
                 {Number(commonInfo.exp) > 1 ? 'years' : 'year'}
             </p>
+            <hr />
+            {Object.keys(awards).map(award => (
+                <p>
+                    {awards[award].length > 1
+                        ? `${awards[award].length}x ${award}`
+                        : award}
+                </p>
+            ))}
+            <hr/>
         </div>
     );
+}
+
+function processAward(acc, curr) {
+    const desc = curr[4];
+    const n = Number(curr[5]);
+    const season = curr[6];
+    const month = curr[7];
+    const week = curr[8];
+    if (!month && !week) {
+        if (n) {
+            const teamNum = n =>
+                n === 1 ? '1st Team' : n === 2 ? '2nd Team' : '3rd Team';
+            const award = `${desc} ${teamNum(n)}`;
+            if (!acc[award]) {
+                acc[award] = [];
+            }
+            acc[award].push(`${season.substr(0, 2)}${season.substr(5)}`);
+        } else {
+            if (!acc[desc]) {
+                acc[desc] = [];
+            }
+            acc[desc].push(`${season.substr(0, 2)}${season.substr(5)}`);
+        }
+    }
 }

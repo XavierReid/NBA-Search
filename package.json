@@ -6,7 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "heroku-postbuild": "cd client && npm install && npm run build",
-        "start": "gunicorn app:app",
+        "start": "npm run build --prefix ./client && gunicorn app:app",
         "dev": "npm run dev --prefix ./client"
     },
     "author": "",
