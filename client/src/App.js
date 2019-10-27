@@ -5,8 +5,11 @@ import Team from './components/Team';
 import './App.css';
 import useFetch from './resources/useFetch';
 import { getStatus } from './resources/utils';
+import Game from './components/Game/Game';
 export default function App() {
     const [items, setItems] = useState([]);
+    const [games, setGames] = useState([]);
+    const [comparables, setComparables] = useState([]);
     const players = useFetch('/api/players'); // ?active_only=True
     const teams = useFetch('/api/teams');
     const pStatus = getStatus(players);
@@ -38,8 +41,13 @@ export default function App() {
                 removeItem={removeItem}
                 searchable={searchableItems}
                 queried={items}
+                addGames={setGames}
             />
             <div className="content">
+                {/* <Compare comparables={comparables} /> */}
+                {games.map(game => (
+                    <Game key={game.id} game={game} />
+                ))}
                 {items.map(item => {
                     if (item.is_player) {
                         return (

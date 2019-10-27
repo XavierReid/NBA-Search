@@ -49,20 +49,50 @@ export default function PlayerInfo({ data, addItem }) {
                 of {commonInfo.lastAffiliation}
             </p>
             <p>
-                <strong>Experience</strong>: {commonInfo.exp}{' '}
-                {Number(commonInfo.exp) > 1 ? 'years' : 'year'}
+                <strong>Experience</strong>:
+                {Number(commonInfo.exp) === 0
+                    ? ' Rookie'
+                    : Number(commonInfo.exp) > 1
+                    ? ` ${commonInfo.exp} years`
+                    : ` ${commonInfo.exp} year`}
             </p>
             <hr />
-            {Object.keys(awards).map(award => (
+            {/* {Object.keys(awards).map(award => (
                 <p>
                     {awards[award].length > 1
-                        ? `${awards[award].length}x ${award}`
+                        ? `${awards[award].length}x ${award} (${collapse(
+                              awards[award]
+                          )})`
                         : award}
                 </p>
             ))}
-            <hr/>
+            <hr /> */}
         </div>
     );
+}
+
+function collapse(seasons) {
+    //NEEDS REFACTORING
+    const intervals = [];
+    let curr = [];
+    // 2016 2017 2019 2010 2012 2013 2009
+    // 2008 2009 2010 2012 2013 2016 2017 2019
+    if (seasons.length === 1) {
+        return seasons;
+    }
+    seasons.forEach(season => {
+        // [2008, 2010], [2012, 2013], [2016, 2017], [2019]
+        const seasonNum = Number(season);
+        if (curr.length === 0 || seasonNum > curr[1] + 1) {
+            if (curr.length !== 0) {
+                intervals.push(curr);
+            }
+            curr = [seasonNum, seasonNum];
+        } else {
+            curr[1] = seasonNum;
+        }
+    });
+    return intervals;
 }
 
 function processAward(acc, curr) {

@@ -3,6 +3,18 @@ import Toolbar from '../Toolbar';
 import Table from '../Table';
 import { getStatus } from '../../resources/utils';
 // ADD GRAPHS BACK
+
+function isValidDate(curr, start, end){
+    const currDate = new Date(curr);
+    if(start !== '' && currDate < new Date(start)){
+        return false;
+    }
+    if(end !== '' && currDate > new Date(end)){
+        return false;
+    }
+    return true;
+}
+
 export default function GameLog({
     fetchGames,
     reg,
@@ -38,12 +50,15 @@ export default function GameLog({
             return games;
         }
         let filtered;
-        if (type === 'DATE' || type === 'MATCHUP' || type === 'WL') {
+        if (type === 'MATCHUP' || type === 'WL') {
             filtered = games.filter(game =>
                 game[type].toLowerCase().includes(start.toLowerCase())
             );
         } else {
             filtered = games.filter(game => {
+                if(type === 'DATE'){
+                    return isValidDate(game[type], start, end);
+                }
                 const val = Number(game[type]);
                 if (start !== '' && val < Number(start)) {
                     return false;

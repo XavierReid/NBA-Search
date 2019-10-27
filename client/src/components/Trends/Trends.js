@@ -9,7 +9,7 @@ import {
 } from 'recharts';
 import './Trends.css';
 import { generateKey } from '../../resources/utils';
-function CustomTooltip({ active, payload, label }) {
+function CustomTooltip({ active, payload }) {
     if (active) {
         const data = payload[0].payload;
         return (
@@ -26,7 +26,7 @@ function CustomTooltip({ active, payload, label }) {
 }
 export default function Trends({ data, type, handleDelete }) {
     return (
-        <div >
+        <div>
             <button className="exit" onClick={() => handleDelete(null)} />
             <h2>{type.toUpperCase()} Variance</h2>
             <ResponsiveContainer width="99%" aspect={3}>

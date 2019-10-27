@@ -14,9 +14,7 @@ export default function Toolbar(props) {
 
     return (
         <div className="options">
-            {category === 'DATE' ||
-            category === 'MATCHUP' ||
-            category === 'WL' ? (
+            {category === 'MATCHUP' || category === 'WL' ? (
                 <input
                     type="text"
                     placeholder="Search"
